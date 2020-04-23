@@ -1,24 +1,27 @@
-package com.example.agenda;
+package com.example.agenda.ui.activity;
 
 import java.util.List;
 import java.util.Arrays;
 import java.util.ArrayList;
 
+import com.example.agenda.R;
+
 import android.os.Bundle;
 
-import android.app.Activity;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends Activity {
+public class ListaAlunosActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_lista_alunos);
+        setTitle("Lista de Alunos");
 
         // Apenas os brabos entendem
         List<String> alunos = new ArrayList<>(
@@ -28,7 +31,7 @@ public class MainActivity extends Activity {
                 )
         );
 
-        ListView listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
+        ListView listaDeAlunos = findViewById(R.id.activity_lista_alunos_listview);
 
         listaDeAlunos.setAdapter(
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos)
