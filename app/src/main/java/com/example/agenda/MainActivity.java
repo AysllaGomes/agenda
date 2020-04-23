@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
                 )
         );
 
-        ListView listaDeAlunos = findViewById(R.id.activity_main_list_de_alunos);
+        ListView listaDeAlunos = findViewById(R.id.activity_main_lista_de_alunos);
 
         listaDeAlunos.setAdapter(
                 new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos)
