@@ -1,10 +1,7 @@
 package com.example.agenda.ui.activity;
 
-import java.util.List;
-import java.util.Arrays;
-import java.util.ArrayList;
-
 import com.example.agenda.R;
+import com.example.agenda.ui.DAO.AlunoDAO;
 
 import android.os.Bundle;
 
@@ -23,18 +20,16 @@ public class ListaAlunosActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_alunos);
         setTitle("Lista de Alunos");
 
-        // Apenas os brabos entendem
-        List<String> alunos = new ArrayList<>(
-                Arrays.asList(
-                        "Diego Alves", "Rodrigo Caio", "Rafinha", "Filipe Luís", "Willian Arão", "Everson Ribeiro",
-                        "Diego", "De Arrascaeta", "Gabriel B.", "Pedro", "Gerson", "Michael"
-                )
-        );
+        AlunoDAO alunoDAO = new AlunoDAO();
 
         ListView listaDeAlunos = findViewById(R.id.activity_lista_alunos_listview);
 
         listaDeAlunos.setAdapter(
-                new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, alunos)
+                new ArrayAdapter<>(
+                        this,
+                        android.R.layout.simple_list_item_1,
+                        alunoDAO.todos()
+                )
         );
     }
 
