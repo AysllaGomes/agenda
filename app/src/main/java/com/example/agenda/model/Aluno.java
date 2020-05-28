@@ -42,6 +42,6 @@ public class Aluno implements Serializable {
     }
 
     public boolean idValido() {
-        return id > 1;
+        return id > 0;
     }
 }
