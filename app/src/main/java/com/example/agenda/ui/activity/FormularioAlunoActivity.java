@@ -37,8 +37,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
         Intent dados = getIntent();
 
-        if (dados.hasExtra("Aluno")) {
-            aluno = (Aluno) dados.getSerializableExtra("Aluno");
+        if (dados.hasExtra("aluno")) {
+            aluno = (Aluno) dados.getSerializableExtra("aluno");
 
             campoNome.setText(aluno.getNome());
             campoTelefone.setText(aluno.getTelefone());

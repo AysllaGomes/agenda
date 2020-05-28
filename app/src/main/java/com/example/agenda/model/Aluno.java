@@ -27,7 +27,7 @@ public class Aluno implements Serializable {
 
     public String getEmail() { return email; }
 
-    public void setId(int contIds) {}
+    public void setId(int id) { this.id = id; }
 
     public void setNome(String nome) { this.nome = nome; }
 

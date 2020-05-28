@@ -21,13 +21,17 @@ public class AlunoDAO {
     public void edit(Aluno aluno) {
         Aluno alunoEncontrado = null;
 
-        for (Aluno student : alunos) {
-            if (student.getId() == aluno.getId()) { alunoEncontrado = student; }
+        for (Aluno student:
+                alunos) {
+            if (student.getId() == aluno.getId()) {
+                alunoEncontrado = student;
+            }
+
         }
 
-        if (alunoEncontrado!= null) {
-            int positionStudent = alunos.indexOf(alunoEncontrado);
-            alunos.set(positionStudent, aluno);
+        if (alunoEncontrado != null) {
+            int posicaoDoAluno = alunos.indexOf(alunoEncontrado);
+            alunos.set(posicaoDoAluno, aluno);
         }
     }
 

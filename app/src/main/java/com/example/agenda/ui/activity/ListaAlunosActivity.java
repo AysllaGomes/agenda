@@ -5,9 +5,8 @@ import android.content.Intent;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Toast;
 import android.widget.ListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import androidx.annotation.Nullable;
@@ -66,7 +65,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 new ArrayAdapter<>(
                         this,
                         android.R.layout.simple_list_item_1,
-                        alunoDAO.todos()
+                        alunos
                 )
         );
 
@@ -76,9 +75,9 @@ public class ListaAlunosActivity extends AppCompatActivity {
                 Aluno alunoEscolhido = alunos.get(position);
                 Intent idFormularioActivity = new Intent(ListaAlunosActivity.this, FormularioAlunoActivity.class);
 
-                idFormularioActivity.putExtra("Aluno", alunoEscolhido);
+                idFormularioActivity.putExtra("aluno", alunoEscolhido);
 
-                Log.i("Aluno", "" + alunoEscolhido);
+                startActivity(idFormularioActivity);
             }
         });
     }
