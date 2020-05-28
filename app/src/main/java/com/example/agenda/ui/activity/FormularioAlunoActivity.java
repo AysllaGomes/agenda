@@ -14,9 +14,12 @@ import com.example.agenda.ui.DAO.AlunoDAO;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import static com.example.agenda.ui.activity.ConstantesActivities.KEY_ALUNO;
+
 public class FormularioAlunoActivity extends AppCompatActivity {
 
-    public static final String TITULO_APP_BAR = "Novo aluno";
+    public static final String TITULO_APPBAR_NOVO_ALUNO = "Novo aluno";
+    public static final String TITULO_APPBAR_EDITA_ALUNO = "Alteração do aluno";
 
     private EditText campoNome;
     private EditText campoTelefone;
@@ -30,21 +33,29 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_aluno);
 
-        setTitle(TITULO_APP_BAR);
-
         inicializacaoDosCampos();
         configuraBotaoSalvar();
 
+        loadAluno();
+    }
+
+    private void loadAluno() {
         Intent dados = getIntent();
 
-        if (dados.hasExtra("aluno")) {
-            aluno = (Aluno) dados.getSerializableExtra("aluno");
+        if (dados.hasExtra(KEY_ALUNO)) {
+            setTitle(TITULO_APPBAR_EDITA_ALUNO);
+            aluno = (Aluno) dados.getSerializableExtra(KEY_ALUNO);
+            preencheCampos();
+        } else {
+            setTitle(TITULO_APPBAR_NOVO_ALUNO);
+            aluno = new Aluno();
+        }
+    }
 
-            campoNome.setText(aluno.getNome());
-            campoTelefone.setText(aluno.getTelefone());
-            campoEmail.setText(aluno.getEmail());
-        } else { aluno = new Aluno(); }
-
+    private void preencheCampos() {
+        campoNome.setText(aluno.getNome());
+        campoTelefone.setText(aluno.getTelefone());
+        campoEmail.setText(aluno.getEmail());
     }
 
     private void configuraBotaoSalvar() {
@@ -55,18 +66,20 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
                     @Override
                     public void onClick(View view) {
-
-                        preencheAluno();
-
-                        if (aluno.idValido()) { alunoDAO.edit(aluno); }
-                            else { alunoDAO.salva(aluno); }
-
-                        finish();
-
+                        finalizaFormulario();
                     }
 
                 }
         );
+    }
+
+    private void finalizaFormulario() {
+        preencheAluno();
+
+        if (aluno.idValido()) { alunoDAO.edit(aluno); }
+            else { alunoDAO.salva(aluno); }
+
+        finish();
     }
 
     private void inicializacaoDosCampos() {
