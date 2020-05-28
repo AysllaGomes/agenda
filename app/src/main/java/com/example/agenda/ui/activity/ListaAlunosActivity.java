@@ -3,7 +3,10 @@ package com.example.agenda.ui.activity;
 import android.os.Bundle;
 import android.content.Intent;
 
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 
@@ -11,8 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.agenda.R;
+import com.example.agenda.model.Aluno;
 import com.example.agenda.ui.DAO.AlunoDAO;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
@@ -54,6 +60,8 @@ public class ListaAlunosActivity extends AppCompatActivity {
 
     private void configuraLista(AlunoDAO alunoDAO) {
         ListView listaDeAlunos = findViewById(R.id.activity_lista_alunos_listview);
+        final List<Aluno> alunos = alunoDAO.todos();
+
         listaDeAlunos.setAdapter(
                 new ArrayAdapter<>(
                         this,
@@ -61,6 +69,18 @@ public class ListaAlunosActivity extends AppCompatActivity {
                         alunoDAO.todos()
                 )
         );
+
+        listaDeAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Aluno alunoEscolhido = alunos.get(position);
+                Intent idFormularioActivity = new Intent(ListaAlunosActivity.this, FormularioAlunoActivity.class);
+
+                idFormularioActivity.putExtra("Aluno", alunoEscolhido);
+
+                Log.i("Aluno", "" + alunoEscolhido);
+            }
+        });
     }
 
 }

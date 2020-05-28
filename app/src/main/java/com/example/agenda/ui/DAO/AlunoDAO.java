@@ -9,7 +9,27 @@ public class AlunoDAO {
 
     private final static List<Aluno> alunos = new ArrayList<>();
 
-    public void salva(Aluno aluno) { alunos.add(aluno); }
+    private static int contIds = 1;
+
+    public void salva(Aluno aluno) {
+        aluno.setId(contIds);
+        alunos.add(aluno);
+
+        contIds++;
+    }
+
+    public void edit(Aluno aluno) {
+        Aluno alunoEncontrado = null;
+
+        for (Aluno student : alunos) {
+            if (student.getId() == aluno.getId()) { alunoEncontrado = student; }
+        }
+
+        if (alunoEncontrado!= null) {
+            int positionStudent = alunos.indexOf(alunoEncontrado);
+            alunos.set(positionStudent, aluno);
+        }
+    }
 
     public List<Aluno> todos() { return  new ArrayList<>(alunos); }
 
