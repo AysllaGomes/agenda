@@ -3,15 +3,16 @@ package com.example.agenda.ui.activity;
 import android.os.Bundle;
 import android.content.Intent;
 
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.agenda.R;
 import com.example.agenda.model.Aluno;
 import com.example.agenda.ui.DAO.AlunoDAO;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import static com.example.agenda.ui.activity.ConstantesActivities.KEY_ALUNO;
@@ -34,9 +35,24 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_formulario_aluno);
 
         inicializacaoDosCampos();
-        configuraBotaoSalvar();
 
         loadAluno();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_formulario_aluno_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.activity_formulario_aluno_menu_salvar) { finalizaFormulario(); }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadAluno() {
@@ -56,21 +72,6 @@ public class FormularioAlunoActivity extends AppCompatActivity {
         campoNome.setText(aluno.getNome());
         campoTelefone.setText(aluno.getTelefone());
         campoEmail.setText(aluno.getEmail());
-    }
-
-    private void configuraBotaoSalvar() {
-        Button botaoSalvar = findViewById(R.id.activity_formulario_aluno_botao_salvar);
-
-        botaoSalvar.setOnClickListener(
-                new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        finalizaFormulario();
-                    }
-
-                }
-        );
     }
 
     private void finalizaFormulario() {
