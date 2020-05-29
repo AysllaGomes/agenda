@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.example.agenda.R;
 import com.example.agenda.model.Aluno;
-import com.example.agenda.ui.DAO.AlunoDAO;
+import com.example.agenda.DAO.AlunoDAO;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

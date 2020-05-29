@@ -1,9 +1,9 @@
-package com.example.agenda.ui.DAO;
+package com.example.agenda.DAO;
+
+import java.util.List;
+import java.util.ArrayList;
 
 import com.example.agenda.model.Aluno;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AlunoDAO {
 
