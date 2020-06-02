@@ -2,17 +2,21 @@ package com.example.agenda.ui.activity;
 
 import android.os.Bundle;
 import android.content.Intent;
+import android.app.AlertDialog;
 import androidx.annotation.Nullable;
+import android.content.DialogInterface;
 
 import android.view.View;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.view.ContextMenu;
+import android.widget.AdapterView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.agenda.R;
 import com.example.agenda.model.Aluno;
-import com.example.agenda.ui.ListaAlunosView;
+import com.example.agenda.DAO.AlunoDAO;
+import com.example.agenda.ui.adapter.ListaAlunosAdapter;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,8 +24,9 @@ import static com.example.agenda.ui.activity.ConstantesActivities.KEY_ALUNO;
 
 public class ListaAlunosActivity extends AppCompatActivity {
 
-    private static final String TITULO_APPBAR = "Lista de alunos";
-    private final ListaAlunosView listaAlunosView = new ListaAlunosView(this);
+    public static final String TITULO_APPBAR = "Lista de alunos";
+    private final AlunoDAO dao = new AlunoDAO();
+    private ListaAlunosAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,9 +48,31 @@ public class ListaAlunosActivity extends AppCompatActivity {
     public boolean onContextItemSelected(MenuItem item) {
         int itemId = item.getItemId();
 
-        if (itemId == R.id.activity_lista_alunos_menu_remover) { listaAlunosView.confirmaRemocao(item); }
+        if (itemId == R.id.activity_lista_alunos_menu_remover) { confirmaRemocao(item); }
 
         return super.onContextItemSelected(item);
+    }
+
+    private void confirmaRemocao(final MenuItem item) {
+        new AlertDialog
+                .Builder(this)
+                .setTitle("Atenção")
+                .setMessage("Deseja realizar a exclusão deste aluno?")
+                .setPositiveButton("Sim", excludedStudent(item))
+                .setNegativeButton("Não", null)
+                .show();
+    }
+
+    private DialogInterface.OnClickListener excludedStudent(MenuItem item) {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                AdapterView.AdapterContextMenuInfo menuInfo =
+                        (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+                Aluno alunoEscolhido = adapter.getItem(menuInfo.position);
+                remove(alunoEscolhido);
+            }
+        };
     }
 
     private void configuraFabNovoAluno() {
@@ -53,7 +80,7 @@ public class ListaAlunosActivity extends AppCompatActivity {
         botaoNovoAluno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ListaAlunosActivity.this.abreFormularioModoInsereAluno();
+                abreFormularioModoInsereAluno();
             }
         });
     }
@@ -65,20 +92,32 @@ public class ListaAlunosActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        listaAlunosView.updateStudent();
+        atualizaAlunos();
+    }
+
+    private void atualizaAlunos() {
+        adapter.update(dao.todos());
     }
 
     private void configuraLista() {
         ListView listaDeAlunos = findViewById(R.id.activity_lista_alunos_listview);
-        listaAlunosView.configuraAdapter(listaDeAlunos);
+        configuraAdapter(listaDeAlunos);
         configuraListenerDeCliquePorItem(listaDeAlunos);
         registerForContextMenu(listaDeAlunos);
     }
 
+    private void remove(Aluno aluno) {
+        dao.delete(aluno);
+        adapter.remove(aluno);
+    }
+
     private void configuraListenerDeCliquePorItem(ListView listaDeAlunos) {
-        listaDeAlunos.setOnItemClickListener((adapterView, view, posicao, id) -> {
-            Aluno alunoEscolhido = (Aluno) adapterView.getItemAtPosition(posicao);
-            abreFormularioModoEditaAluno(alunoEscolhido);
+        listaDeAlunos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long id) {
+                Aluno alunoEscolhido = (Aluno) adapterView.getItemAtPosition(posicao);
+                abreFormularioModoEditaAluno(alunoEscolhido);
+            }
         });
     }
 
@@ -86,6 +125,11 @@ public class ListaAlunosActivity extends AppCompatActivity {
         Intent vaiParaFormularioActivity = new Intent(ListaAlunosActivity.this, FormularioAlunoActivity.class);
         vaiParaFormularioActivity.putExtra(KEY_ALUNO, aluno);
         startActivity(vaiParaFormularioActivity);
+    }
+
+    private void configuraAdapter(ListView listaDeAlunos) {
+        adapter = new ListaAlunosAdapter(this);
+        listaDeAlunos.setAdapter(adapter);
     }
 
 }

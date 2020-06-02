@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.content.Context;
+import android.widget.TextView;
 import android.widget.BaseAdapter;
 import android.view.LayoutInflater;
 
@@ -20,30 +20,21 @@ public class ListaAlunosAdapter extends BaseAdapter {
 
     public ListaAlunosAdapter(Context context) { this.context = context; }
 
-    public void update(List<Aluno> alunos) {
-        alunos.clear();
-        this.alunos.addAll(alunos);
-        // atualize com o q vc teve de novo
-        notifyDataSetChanged();
-    }
-
-    public void remove(Aluno aluno) {
-        alunos.remove(aluno);
-        // atualize com o q vc teve de novo
-        notifyDataSetChanged();
-    }
-
     @Override
-    public int getCount() { return alunos.size(); }
+    public int getCount() {
+        return alunos.size();
+    }
 
     @Override
     public Aluno getItem(int position) { return alunos.get(position); }
 
     @Override
-    public long getItemId(int position) { return alunos.get(position).getId(); }
+    public long getItemId(int position) {
+        return alunos.get(position).getId();
+    }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+    public View getView(int position, View view, ViewGroup viewGroup) {
         View createView = createView(viewGroup);
 
         Aluno alunoDevolvido = alunos.get(position);
@@ -52,18 +43,29 @@ public class ListaAlunosAdapter extends BaseAdapter {
         return createView;
     }
 
-    private void vinculaDados(View createView, Aluno alunoDevolvido) {
-        TextView name = createView.findViewById(R.id.item_aluno_nome);
-        TextView phone = createView.findViewById(R.id.item_aluno_telefone);
+    private void vinculaDados(View view, Aluno aluno) {
+        TextView name = view.findViewById(R.id.item_aluno_nome);
+        TextView phone = view.findViewById(R.id.item_aluno_telefone);
 
-        name.setText(alunoDevolvido.getNome());
-        phone.setText(alunoDevolvido.getTelefone());
+        name.setText(aluno.getNome());
+        phone.setText(aluno.getTelefone());
     }
 
     private View createView(ViewGroup viewGroup) {
         return LayoutInflater
                 .from(context)
                 .inflate(R.layout.item_aluno, viewGroup, false);
+    }
+
+    public void update(List<Aluno> alunos){
+        this.alunos.clear();
+        this.alunos.addAll(alunos);
+        notifyDataSetChanged();
+    }
+
+    public void remove(Aluno aluno) {
+        alunos.remove(aluno);
+        notifyDataSetChanged();
     }
 
 }
